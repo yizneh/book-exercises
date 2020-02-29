@@ -8,21 +8,30 @@ library("shiny")
 # `tabPanel()` with a title "Introduction" to represent the first tab.
 # This layout will contain the following elements:
   
+    intro_panel <- tabPanel(
+      title = "introduction",
   # A `titlePanel()` with the text "Income Inequality"
   
-
+  titlePanel("Income Inequality"),
   # A paragraph `p()` describing with the text: "The below diagram was created
   # by the New York Times to illustrate the increasing level of inequality in
   # the US."
-  
+  p("The below diagram was created
+   by the New York Times to illustrate the increasing level of inequality in
+   the US."),
 
   # An image `img()` to display. This content should have a `src` attribute of
   # "inequality.png" (which will refer to the file in the `www/` folder).
-  
-
+   img(src="inequality.png",alt="example NYT chart"),
   # A paragraph containing a hyperlink `a()` to the source of the article at
   # https://www.nytimes.com/interactive/2017/08/07/opinion/leonhardt-income-inequality.html
-
+    
+    p(
+      a(href="https://www.nytimes.com/interactive/2017/08/07/opinion/leonhardt-income-inequality.html"),
+      "(source)"))
+  
+      
+    
 
   # A paragraph containing a 1-2 sentence description of what the diagram
   # shows. Your paragraph should include both `strong()` and emphasized `em()`
@@ -33,16 +42,21 @@ library("shiny")
 
 # Define a variable `sidebar_content` as a `sidebarPanel()` UI element
 # containing the following information:
-
+ sidebar_content <- sidebarPanel(
   # A `sliderInput()` for the 'percentile' value, labeled "Income Percentile".
   # This slider should let the user pick a range between 0 and 100
-
+  sliderInput(inputId = "percentile" ,label = "Income Percentile",min = 0, max = 100, value =c(0:100)))
 
 # Define a variable `main_content` as a `mainPanel()` UI element
 # containing the following information:
-
+main_content <- mainPanel(
+  
   # A `plotOutput()` element showing the 'plot' output (defined in the server)
-
+  plotOutput( outputId = "plot"),
+  p(
+    "Data form",
+    a(href="http://gabriel-zucman.eu/usdina/")
+  ))
 
   # A paragraph with a hyperlink to the data source
   # http://gabriel-zucman.eu/usdina/
@@ -50,17 +64,17 @@ library("shiny")
 # Define a variable `growth_panel` for your second page. It should be a
 # `tabPanel()` with a title "Growth Chart" to represent the second tab.
 # This layout will contain the following elements:
-
+growth_panel <- titlePanel( title = "Income growth 1980 - 2014",
   # A `titlePanel()` with the text "Income growth 1980-2014"
   
 
   # A `sidebarLayout()` to create two columns.
   # The sidebar layout will contain elements:
-
+sidebarLayout(
     # Your `sidebar_content`
-
+    sidebar_content,
     # Your `main_content`
-    
+    main_content))
 
 # Finally, define a `ui` variable, assigning it a `navbarPage()` layout.
 # You will use `shinyUI()` to render this variable (in `app.R`)
@@ -68,4 +82,4 @@ library("shiny")
 # The layout should include the following elements:
 # - Your `intro_panel`
 # - Your `growth_panel`
-
+ui<- navbarPage(title= "income Inequality",intro_panel,main_content,sidebar_content,growth_panel)
